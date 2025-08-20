@@ -1,0 +1,15 @@
+
+install bun 
+bun create vite
+
+// using technology 
+* typeScript(programming language) ,
+* React( framework) ,
+* Redux(state management), RTK query(data fetching)
+* Tailwind and shadcn (designing)
+
+
+//  resource
+*origin ui
+* hyper ui
+* logoipsum
