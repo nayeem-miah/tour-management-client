@@ -7,11 +7,13 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Password from "@/components/ui/Password"
+import { useRegisterMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 
 const registerSchema = z
     .object({
-        username: z.string().min(3, {
+        name: z.string().min(3, {
             message: "Username must be at least 3 characters.",
         }),
         email: z.email(),
@@ -30,10 +32,13 @@ const registerSchema = z
 
 export function RegisterForm() {
 
+    const [register] = useRegisterMutation()
+
+
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            username: "",
+            name: "",
             email: "",
             password: "",
             confirmPassword: ""
@@ -44,8 +49,21 @@ export function RegisterForm() {
     // const onSubmit : SubmitHandler<FieldValues>= (data) => {
     //     console.log(data);
     // }
-    const onSubmit = (data: z.infer<typeof registerSchema>) => {
-        console.log(data);
+    const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+
+        const userInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password
+        }
+
+        try {
+            const result = await register(userInfo).unwrap();
+            console.log(result);
+            toast.success("user created successfully ✅")
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -57,24 +75,13 @@ export function RegisterForm() {
                 </p>
             </div>
             <div className="grid gap-6 mt-3">
-                {/* <div className="grid gap-3">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="m@example.com" required />
-                </div>
-                <div className="grid gap-3">
-                    <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                    </div>
-                    <Input id="password" type="password" required />
-                </div> */}
-
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         {/* username */}
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Username</FormLabel>
