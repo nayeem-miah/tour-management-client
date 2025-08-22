@@ -19,3 +19,9 @@ bun create vite
 // configure dark light mode 
 * theme change
 * theme  ----> index.css --> change :root and .dark
+
+
+// rtk query ------ custom crate 
+* axios --->  interceptors ---> paste --> /src/lib/axios.ts 
+* custom base Url ---> redux website search --> Axios baseQuery --> example
+

@@ -6,20 +6,26 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import Password from "@/components/ui/Password"
 
 
-const registerSchema = z.object({
-    username: z.string().min(3, {
-        message: "Username must be at least 3 characters.",
-    }),
-    email: z.email(),
-    password: z.string().min(8, {
-        message: "Password is too short minimum 8 character"
-    }),
-    confirmPassword: z.string().min(8, {
-        message: "confirm password is too short character"
-    }),
-})
+const registerSchema = z
+    .object({
+        username: z.string().min(3, {
+            message: "Username must be at least 3 characters.",
+        }),
+        email: z.email(),
+        password: z.string().min(8, {
+            message: "Password is too short minimum 8 character"
+        }),
+        confirmPassword: z.string().min(8, {
+            message: "confirm password is too short character"
+        })
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Password don't match",
+        path: ["confirmPassword"]
+    })
 
 
 export function RegisterForm() {
@@ -112,11 +118,7 @@ export function RegisterForm() {
                                 <FormItem>
                                     <FormLabel>password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="*******"
-                                            type="password"
-                                            {...field}
-                                        />
+                                        <Password {...field} />
                                     </FormControl>
                                     <FormDescription className="sr-only">
                                         This is your privet display password.
@@ -133,11 +135,7 @@ export function RegisterForm() {
                                 <FormItem>
                                     <FormLabel>confirm Password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="*******"
-                                            {...field}
-                                            type="password"
-                                        />
+                                        <Password {...field} />
                                     </FormControl>
                                     <FormDescription className="sr-only">
                                         This is your privet confirm password.
