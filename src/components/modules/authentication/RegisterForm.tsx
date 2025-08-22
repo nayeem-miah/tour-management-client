@@ -1,33 +1,45 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import Password from "@/components/ui/Password"
+import { useRegisterMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 
-const registerSchema = z.object({
-    username: z.string().min(3, {
-        message: "Username must be at least 3 characters.",
-    }),
-    email: z.email(),
-    password: z.string().min(8, {
-        message: "Password is too short minimum 8 character"
-    }),
-    confirmPassword: z.string().min(8, {
-        message: "confirm password is too short character"
-    }),
-})
+const registerSchema = z
+    .object({
+        name: z.string().min(3, {
+            message: "Username must be at least 3 characters.",
+        }),
+        email: z.email(),
+        password: z.string().min(8, {
+            message: "Password is too short minimum 8 character"
+        }),
+        confirmPassword: z.string().min(8, {
+            message: "confirm password is too short character"
+        })
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Password don't match",
+        path: ["confirmPassword"]
+    })
 
 
 export function RegisterForm() {
 
+    const [register] = useRegisterMutation()
+    const navigate = useNavigate()
+
+
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            username: "",
+            name: "",
             email: "",
             password: "",
             confirmPassword: ""
@@ -38,8 +50,22 @@ export function RegisterForm() {
     // const onSubmit : SubmitHandler<FieldValues>= (data) => {
     //     console.log(data);
     // }
-    const onSubmit = (data: z.infer<typeof registerSchema>) => {
-        console.log(data);
+    const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+
+        const userInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password
+        }
+
+        try {
+            const result = await register(userInfo).unwrap();
+            console.log(result);
+            toast.success("user created successfully ✅")
+            navigate("/verify")
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -51,24 +77,13 @@ export function RegisterForm() {
                 </p>
             </div>
             <div className="grid gap-6 mt-3">
-                {/* <div className="grid gap-3">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="m@example.com" required />
-                </div>
-                <div className="grid gap-3">
-                    <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                    </div>
-                    <Input id="password" type="password" required />
-                </div> */}
-
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         {/* username */}
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Username</FormLabel>
@@ -112,11 +127,7 @@ export function RegisterForm() {
                                 <FormItem>
                                     <FormLabel>password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="*******"
-                                            type="password"
-                                            {...field}
-                                        />
+                                        <Password {...field} />
                                     </FormControl>
                                     <FormDescription className="sr-only">
                                         This is your privet display password.
@@ -133,11 +144,7 @@ export function RegisterForm() {
                                 <FormItem>
                                     <FormLabel>confirm Password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="*******"
-                                            {...field}
-                                            type="password"
-                                        />
+                                        <Password {...field} />
                                     </FormControl>
                                     <FormDescription className="sr-only">
                                         This is your privet confirm password.
