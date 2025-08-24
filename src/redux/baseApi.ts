@@ -8,3 +8,16 @@ export const baseApi = createApi({
 
     })
 })
+
+
+// //  not use axios
+// export const baseApi = createApi({
+//     reducerPath: "baseApi",
+//     baseQuery: fetchBaseQuery({
+//         baseUrl: "http://localhost:3000",
+//         credentials : "include"
+//     }),
+//     endpoints: () => ({
+
+//     })
+// })
