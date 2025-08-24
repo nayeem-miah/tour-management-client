@@ -4,7 +4,21 @@ import axiosBaseQuery from "./axiosBaseQuery"
 export const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: axiosBaseQuery(),
+    tagTypes: ["USER"],
     endpoints: () => ({
 
     })
 })
+
+
+// //  not use axios
+// export const baseApi = createApi({
+//     reducerPath: "baseApi",
+//     baseQuery: fetchBaseQuery({
+//         baseUrl: "http://localhost:3000",
+//         credentials : "include"
+//     }),
+//     endpoints: () => ({
+
+//     })
+// })

@@ -14,6 +14,8 @@ bun create vite
 * hyper ui
 * logoipsum
 * json to ts ---> convert js types typeScript
+* clxx -- > 
+* Tailwind marge
 
 
 
@@ -26,3 +28,4 @@ bun create vite
 * axios --->  interceptors ---> paste --> /src/lib/axios.ts 
 * custom base Url ---> redux website search --> Axios baseQuery --> example
 
+// rtk query utils --> logout state change -----> API Slices: Utilities --> reset
