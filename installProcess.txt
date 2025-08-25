@@ -16,6 +16,7 @@ bun create vite
 * json to ts ---> convert js types typeScript
 * clxx -- > 
 * Tailwind marge
+* core ui
 
 
 

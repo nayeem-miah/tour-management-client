@@ -5,7 +5,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Verify from "@/pages/Verify";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./AdminSidebarItems";
 import { UserSidebarItems } from "./UserSidebarItems";
 
@@ -25,6 +25,7 @@ export const router = createBrowserRouter([
         Component: DashboardLayout,
         path: "/admin",
         children: [
+            { index: true, element: <Navigate to={"/admin/analytics"} /> },
             ...generateRoutes(adminSidebarItems)
         ],
     },
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
         Component: DashboardLayout,
         path: "/user",
         children: [
+            { index: true, element: <Navigate to={"/user/bookings"} /> },
             ...generateRoutes(UserSidebarItems)
         ]
     },
