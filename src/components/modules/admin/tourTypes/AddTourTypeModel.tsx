@@ -21,9 +21,9 @@ export function AddTourTypeModel() {
         console.log(data);
         try {
             const res = await addTourTypes(data).unwrap();
-            console.log(res.data);
-            if (res.data.success) {
-                toast.success(res.data.message)
+
+            if (res.success) {
+                toast.success(res.message)
             }
         } catch (error) {
             console.log(error)
