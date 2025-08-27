@@ -37,7 +37,7 @@ export function DeleteConfirmation({ children, onConfirm }: IChildren) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleConfirm}>Continue</AlertDialogAction>
+                    <AlertDialogAction onClick={handleConfirm}>Confirm</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

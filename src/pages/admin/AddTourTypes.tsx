@@ -1,5 +1,5 @@
 import { DeleteConfirmation } from "@/components/DeleteConfirmation";
-import { AddTourTypeModel } from "@/components/modules/admin/tourTypes/AddTourModel";
+import { AddTourTypeModel } from "@/components/modules/admin/tourTypes/AddTourTypeModel";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useDeleteTourTypesMutation, useGetTourTypesQuery } from "@/redux/features/tour/tour.api";

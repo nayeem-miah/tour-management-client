@@ -17,6 +17,7 @@ bun create vite
 * clxx -- > 
 * Tailwind marge
 * core ui
+* file uploader ----> origin ui || (file reader || create Object Url) manually file upload
 
 
 
