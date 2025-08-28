@@ -17,6 +17,13 @@ bun create vite
 * clxx -- > 
 * Tailwind marge
 * core ui
+* data piker --> React DayPicker
++
+
+
+
+
+
 * file uploader ----> origin ui || (file reader || create Object Url) manually file upload
 
 
