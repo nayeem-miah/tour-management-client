@@ -7,14 +7,17 @@ export const tourApi = baseApi.injectEndpoints({
                 url: "/division/create",
                 method: "POST",
                 data: divisionInfo
-            })
+            }),
+            invalidatesTags: ["DIVISION"]
         }),
 
         getDivision: builder.query({
             query: () => ({
                 url: "/division",
                 method: "GET"
-            })
+            }),
+            providesTags: ["DIVISION"],
+            transformResponse: (response) => response.data
         }),
 
 
