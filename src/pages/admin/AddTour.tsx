@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useGetDivisionQuery } from "@/redux/features/division/division.api";
 import { useAddTourMutation, useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
 import { format, formatISO } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useFieldArray, useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,7 +46,8 @@ export default function AddTour() {
             description: "",
             startDay: "",
             endDay: "",
-            included: [{ value: "" }]
+            included: [{ value: "" }],
+            excluded: [{ value: "" }]
         }
     });
 
@@ -54,14 +55,24 @@ export default function AddTour() {
         control: form.control,
         name: "included"
     })
-    console.log(fields);
+    const {
+        fields: excludedFields,
+        append: excludedAppend,
+        remove: excludedRemove
+    } = useFieldArray({
+        control: form.control,
+        name: "excluded"
+    })
+    // console.log(fields);
+
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 
         const tourData = {
             ...data,
             startDay: formatISO(data.startDay),
             endDay: formatISO(data.endDay),
-            included: data.included.map((item: { value: string }) => item.value)
+            included: data.included.map((item: { value: string }) => item.value),
+            excluded: data.excluded.map((item: { value: string }) => item.value)
         }
         console.log(tourData);
         const formData = new FormData();
@@ -288,32 +299,89 @@ export default function AddTour() {
                                 </div>
                             </div>
                             <div className="border-t border-muted w-full"></div>
+                            {/* INCLUDED */}
                             <div>
-                                <Button type="button" onClick={() => append({ value: "" })}>Add Includes</Button>
+                                <div className="flex justify-between">
+                                    <p className="font-semibold">included</p>
+                                    <Button type="button"
+                                        variant={"outline"}
+                                        size={"icon"}
+                                        onClick={() => append({ value: "" }
 
-                                {
-                                    fields.map(((item, index) =>
-                                    (<FormField
-                                        control={form.control}
-                                        name={`included.${index}.value`}
-                                        key={item.id}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>title</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="title"
-                                                        type="title"
-                                                        {...field} />
-                                                </FormControl>
+                                        )}>
+                                        <Plus />
+                                    </Button>
+                                </div>
 
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    )))
-                                }
+                                <div className="space-y-3 mt-4">
+                                    {
+                                        fields.map(((item, index) =>
+                                            <div className="flex gap-2">
+                                                <FormField
+                                                    control={form.control}
+                                                    name={`included.${index}.value`}
+                                                    key={item.id}
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex-1">
+                                                            <FormControl>
+                                                                <Input placeholder="title"
+                                                                    type="title"
+                                                                    {...field} />
+                                                            </FormControl>
+
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <Button type="button" onClick={() => remove(index)} variant="destructive" size={"icon"}><Trash2 /></Button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
 
                             </div>
+                            {/* EXCLUDED */}
+                            <div>
+                                <div className="flex justify-between">
+                                    <p className="font-semibold">excluded</p>
+                                    <Button type="button"
+                                        variant={"outline"}
+                                        size={"icon"}
+                                        onClick={() => excludedAppend({ value: "" }
+
+                                        )}>
+                                        <Plus />
+                                    </Button>
+                                </div>
+
+                                <div className="space-y-3 mt-4">
+                                    {
+                                        excludedFields.map(((item, index) =>
+                                            <div className="flex gap-2">
+                                                <FormField
+                                                    control={form.control}
+                                                    name={`excluded.${index}.value`}
+                                                    key={item.id}
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex-1">
+                                                            <FormControl>
+                                                                <Input placeholder="title"
+                                                                    type="title"
+                                                                    {...field} />
+                                                            </FormControl>
+
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <Button type="button" onClick={() => excludedRemove(index)} variant="destructive" size={"icon"}><Trash2 /></Button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+
+                            </div>
+
                         </form>
                     </Form>
                     <Button disabled={isLoading} className="w-full mt-3" type="submit" form="add-tour">Create Tour</Button>
