@@ -15,7 +15,7 @@ import { useAddTourMutation, useGetTourTypesQuery } from "@/redux/features/tour/
 import { format, formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { useFieldArray, useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function AddTour() {
@@ -45,18 +45,25 @@ export default function AddTour() {
             tourType: "",
             description: "",
             startDay: "",
-            endDay: ""
+            endDay: "",
+            included: [{ value: "" }]
         }
     });
 
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "included"
+    })
+    console.log(fields);
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 
         const tourData = {
             ...data,
             startDay: formatISO(data.startDay),
             endDay: formatISO(data.endDay),
+            included: data.included.map((item: { value: string }) => item.value)
         }
-
+        console.log(tourData);
         const formData = new FormData();
 
         formData.append("data", JSON.stringify(tourData))
@@ -64,17 +71,17 @@ export default function AddTour() {
         images.forEach(image => formData.append("files", image as File));
 
         // console.log(formData.get("files"));
-        const toastId = toast.loading("loading........");
-        try {
-            const res = await addTour(formData).unwrap();
-            console.log(res);
-            if (res.success) {
-                toast.success(res.message, { id: toastId });
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error(error.data.message, { id: toastId })
-        }
+        // const toastId = toast.loading("loading........");
+        // try {
+        //     const res = await addTour(formData).unwrap();
+        //     console.log(res);
+        //     if (res.success) {
+        //         toast.success(res.message, { id: toastId });
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error(error.data.message, { id: toastId })
+        // }
     }
 
 
@@ -280,10 +287,36 @@ export default function AddTour() {
                                     <MultipleImageUploader onChange={setImages} />
                                 </div>
                             </div>
+                            <div className="border-t border-muted w-full"></div>
+                            <div>
+                                <Button type="button" onClick={() => append({ value: "" })}>Add Includes</Button>
 
+                                {
+                                    fields.map(((item, index) =>
+                                    (<FormField
+                                        control={form.control}
+                                        name={`included.${index}.value`}
+                                        key={item.id}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>title</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="title"
+                                                        type="title"
+                                                        {...field} />
+                                                </FormControl>
+
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    )))
+                                }
+
+                            </div>
                         </form>
                     </Form>
-                    <Button disabled={isLoading} className="w-full mt-3" type="submit" form="add-tour">Submit</Button>
+                    <Button disabled={isLoading} className="w-full mt-3" type="submit" form="add-tour">Create Tour</Button>
                 </CardContent>
             </Card>
         </div>
