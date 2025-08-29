@@ -38,3 +38,7 @@ bun create vite
 * custom base Url ---> redux website search --> Axios baseQuery --> example
 
 // rtk query utils --> logout state change -----> API Slices: Utilities --> reset
+
+
+
+// array data [] ----> react hook form -----> useFieldArray
