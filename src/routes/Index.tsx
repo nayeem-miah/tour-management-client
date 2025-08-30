@@ -13,12 +13,19 @@ import Unauthorized from "@/pages/Unauthorized";
 import { role } from "@/constants/role";
 import type { TRole } from "@/types";
 import Tours from "@/pages/Tour";
+import Bookings from "@/pages/user/Bookings";
+import TourDetails from "@/pages/TourDetails";
+import HomePage from "@/pages/HomePage";
 
 export const router = createBrowserRouter([
     {
         Component: App,
         path: "/",
         children: [
+            {
+                Component: HomePage,
+                index: true
+            },
             {
                 path: "about",
                 Component: About
@@ -27,6 +34,13 @@ export const router = createBrowserRouter([
                 path: "tours",
                 Component: Tours
             },
+            {
+                path: "tours/:id",
+                Component: TourDetails
+            }, {
+                path: "booking",
+                Component: Bookings
+            }
         ]
     },
 
