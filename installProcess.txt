@@ -18,7 +18,8 @@ bun create vite
 * Tailwind marge
 * core ui
 * data piker --> React DayPicker
-+
+* shadcn Blogs  component----------> blocks for Shadcn UI
+
 
 
 

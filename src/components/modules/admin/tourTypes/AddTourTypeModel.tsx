@@ -9,11 +9,12 @@ import {
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 export function AddTourTypeModel() {
-
+    const [open, setOpen] = useState(false)
     const form = useForm();
     const [addTourTypes] = useAddTourTypeMutation();
 
@@ -23,18 +24,20 @@ export function AddTourTypeModel() {
             const res = await addTourTypes(data).unwrap();
 
             if (res.success) {
-                toast.success(res.message)
+                toast.success(res.message);
+                setOpen(false)
             }
         } catch (error) {
             console.log(error)
             if (error.data.message) {
                 toast.error(error.data.message);
+                setOpen(false)
             }
         }
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <form>
                 <DialogTrigger asChild>
                     <Button variant="outline">Add tour types</Button>

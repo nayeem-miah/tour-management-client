@@ -36,6 +36,7 @@ export function LoginForm() {
             const res = await login(data).unwrap();
 
             if (res.success) {
+                toast.success(res.message)
                 navigate("/")
             }
 
