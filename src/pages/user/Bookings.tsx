@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useGetToursQuery } from "@/redux/features/tour/tour.api";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -7,14 +8,13 @@ export default function Booking() {
     const [guestCount, setGuestCount] = useState(1);
     const [totalAmount, setTotalAmount] = useState(0);
 
-    console.log(totalAmount);
 
     const { id } = useParams();
-    const { data, isLoading, isError } = useGetAllToursQuery({ _id: id });
-    const [createBooking] = useCreateBookingMutation();
+    const { data, isLoading, isError } = useGetToursQuery({ _id: id });
+    // const [createBooking] = useCreateBookingMutation();
 
     const tourData = data?.[0];
-
+    console.log(tourData);
     useEffect(() => {
         if (!isLoading && !isError) {
             setTotalAmount(guestCount * tourData!.costFrom);
@@ -40,10 +40,10 @@ export default function Booking() {
         }
 
         try {
-            const res = await createBooking(bookingData).unwrap();
-            if (res.success) {
-                window.open(res.data.paymentUrl);
-            }
+            // const res = await createBooking(bookingData).unwrap();
+            // if (res.success) {
+            //     window.open(res.data.paymentUrl);
+            // }
         } catch (err) {
             console.log(err);
         }
@@ -57,7 +57,7 @@ export default function Booking() {
         <div className="flex flex-col md:flex-row gap-8 p-6 container mx-auto">
             {!isLoading && isError && (
                 <div>
-                    <p>Something Went Wrong!!</p>{" "}
+                    <p>Something Went Wrong!!</p>
                 </div>
             )}
 
