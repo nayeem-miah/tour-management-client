@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button";
 import { useGetToursQuery } from "@/redux/features/tour/tour.api";
 
@@ -14,7 +15,7 @@ export default function Booking() {
     // const [createBooking] = useCreateBookingMutation();
 
     const tourData = data?.[0];
-    console.log(tourData);
+
     useEffect(() => {
         if (!isLoading && !isError) {
             setTotalAmount(guestCount * tourData!.costFrom);
@@ -38,7 +39,7 @@ export default function Booking() {
                 guestCount: guestCount,
             };
         }
-
+        console.log(bookingData);
         try {
             // const res = await createBooking(bookingData).unwrap();
             // if (res.success) {
