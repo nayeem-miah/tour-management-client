@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button";
+import { useCreateBookingMutation } from "@/redux/features/booking/booking.api";
 import { useGetToursQuery } from "@/redux/features/tour/tour.api";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { toast } from "sonner";
 
 export default function Booking() {
     const [guestCount, setGuestCount] = useState(1);
@@ -12,7 +15,7 @@ export default function Booking() {
 
     const { id } = useParams();
     const { data, isLoading, isError } = useGetToursQuery({ _id: id });
-    // const [createBooking] = useCreateBookingMutation();
+    const [createBooking] = useCreateBookingMutation();
 
     const tourData = data?.[0];
 
@@ -41,12 +44,14 @@ export default function Booking() {
         }
         console.log(bookingData);
         try {
-            // const res = await createBooking(bookingData).unwrap();
-            // if (res.success) {
-            //     window.open(res.data.paymentUrl);
-            // }
-        } catch (err) {
+            const res = await createBooking(bookingData).unwrap();
+            console.log(res);
+            if (res.success) {
+                window.open(res.data.paymentUrl);
+            }
+        } catch (err: any) {
             console.log(err);
+            toast.error(err.message)
         }
     };
 
