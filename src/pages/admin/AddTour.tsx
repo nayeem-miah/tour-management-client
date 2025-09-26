@@ -34,8 +34,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { FileMetadata } from "@/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 
-import { useGetDivisionQuery } from "@/redux/features/division/division.api";
 import { useAddTourMutation, useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
 import type { IErrorResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,7 +70,7 @@ export default function AddTour() {
     const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
 
     const { data: divisionData, isLoading: divisionLoading } =
-        useGetDivisionQuery(undefined);
+        useGetDivisionsQuery(undefined);
     const { data: tourTypeData } = useGetTourTypesQuery(undefined);
     const [addTour] = useAddTourMutation();
 

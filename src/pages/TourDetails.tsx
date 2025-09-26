@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useGetDivisionQuery } from "@/redux/features/division/division.api";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import { useGetToursQuery } from "@/redux/features/tour/tour.api";
 import { format } from "date-fns";
 import { Link, useParams } from "react-router";
@@ -8,7 +8,7 @@ export default function TourDetails() {
     const { id } = useParams();
     const { data, isLoading } = useGetToursQuery({ _id: id });
 
-    const { data: divisionData } = useGetDivisionQuery(
+    const { data: divisionData } = useGetDivisionsQuery(
         {
             _id: data?.[0]?.division,
             fields: "name",
