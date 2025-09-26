@@ -9,7 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useGetDivisionQuery } from "@/redux/features/division/division.api";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
 
 import { useSearchParams } from "react-router";
@@ -21,7 +21,7 @@ export default function TourFilters() {
     const selectedTourType = searchParams.get("tourType") || undefined;
 
     const { data: divisionData, isLoading: divisionIsLoading } =
-        useGetDivisionQuery(undefined);
+        useGetDivisionsQuery(undefined);
 
     const { data: tourTypeData, isLoading: tourTypeIsLoading } =
         useGetTourTypesQuery({ limit: 1000, fields: "_id,name" });
@@ -43,6 +43,7 @@ export default function TourFilters() {
     const handleDivisionChange = (value: string) => {
         const params = new URLSearchParams(searchParams);
         params.set("division", value);
+        // console.log(params);
         setSearchParams(params);
     };
 

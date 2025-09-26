@@ -1,30 +1,25 @@
 import { baseApi } from "@/redux/baseApi";
 
-export const tourApi = baseApi.injectEndpoints({
+export const divisionApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         addDivision: builder.mutation({
-            query: (divisionInfo) => ({
+            query: (divisionData) => ({
                 url: "/division/create",
                 method: "POST",
-                data: divisionInfo
+                data: divisionData,
             }),
-            invalidatesTags: ["DIVISION"]
+            invalidatesTags: ["DIVISION"],
         }),
-
-        getDivision: builder.query({
-            query: () => ({
+        getDivisions: builder.query({
+            query: (params) => ({
                 url: "/division",
-                method: "GET"
+                method: "GET",
+                params,
             }),
             providesTags: ["DIVISION"],
-            transformResponse: (response) => response.data
+            transformResponse: (response) => response.data,
         }),
+    }),
+});
 
-
-    })
-})
-
-export const {
-    useAddDivisionMutation,
-    useGetDivisionQuery
-} = tourApi
+export const { useAddDivisionMutation, useGetDivisionsQuery } = divisionApi;
